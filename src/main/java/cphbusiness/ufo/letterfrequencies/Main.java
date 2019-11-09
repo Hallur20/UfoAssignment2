@@ -23,11 +23,11 @@ public class Main {
 
 
 
-            String fileName = "/home/hvn15/letterfrequencies/src/main/resources/FoundationSeries.txt";
+            String fileName = "/home/hvn15/letterfrequencies/UfoAssignment2/src/main/resources/FoundationSeries.txt";
             Reader reader = new FileReader(fileName);
             Map<Integer, Long> freq = new HashMap<>();
             tallyChars(reader, freq);
-            //print_tally(freq);
+            print_tally(freq);
 
 
     }
@@ -45,7 +45,7 @@ public class Main {
                     freq.put(b, 1L);
                 }
             }
-            reader = new FileReader("/home/hvn15/letterfrequencies/src/main/resources/FoundationSeries.txt");
+            reader = new FileReader("/home/hvn15/letterfrequencies/UfoAssignment2/src/main/resources/FoundationSeries.txt");
             long finish = System.currentTimeMillis();
             long timeElapsed = finish - start;
             sum += timeElapsed;
@@ -71,7 +71,7 @@ public class Main {
                         toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
                                 LinkedHashMap::new));
         for (Character c : sorted.keySet()) {
-            //System.out.println("" + c + ": " + sorted.get(c));;
+            System.out.println("" + c + ": " + sorted.get(c));;
         }
     }
 }
