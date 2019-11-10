@@ -1,13 +1,11 @@
 package cphbusiness.ufo.letterfrequencies;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -19,41 +17,59 @@ import static java.util.stream.Collectors.toMap;
  */
 public class Main {
 
+
     public static void main(String[] args) throws IOException {
 
 
 
             String fileName = "/home/hvn15/letterfrequencies/UfoAssignment2/src/main/resources/FoundationSeries.txt";
-            Reader reader = new FileReader(fileName);
-            Map<Integer, Long> freq = new HashMap<>();
-            tallyChars(reader, freq);
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
+        Long chars = 0L;
+        String line;
+        while((line = reader.readLine()) != null){
+            chars += line.length();
+        }
+        System.out.println("chars was: " + chars);
+        System.out.println(reader.lines().count()/4);
+
+
+
+
+
+
+        Map<Integer, Long> freq = new HashMap<>();
+        Long charAt = 0L;
+        for (int i = 0; i < 4; i++){
+            TallyThread t = new TallyThread(charAt, chars/4, fileName, freq);
+            t.run();
+            charAt += chars/4;
+        }
+
+            //Map<Integer, Long> freq = new HashMap<>();
+            //tallyChars(reader, freq);
             print_tally(freq);
 
 
     }
 
-    private static void tallyChars(Reader reader, Map<Integer, Long> freq) throws IOException {
+    private static void tallyChars(BufferedReader reader, Map<Integer, Long> freq) throws IOException {
+      //  System.out.println(reader.lines().count());
         int sum = 0;
-        for (int i = 0; i < 100; i++){
             long start = System.currentTimeMillis();
 
             int b;
+
             while ((b = reader.read()) != -1) {
                 try {
                     freq.put(b, freq.get(b) + 1);
+
                 } catch (NullPointerException np) {
                     freq.put(b, 1L);
                 }
             }
-            reader = new FileReader("/home/hvn15/letterfrequencies/UfoAssignment2/src/main/resources/FoundationSeries.txt");
+            reader = new BufferedReader(new FileReader("/home/hvn15/letterfrequencies/UfoAssignment2/src/main/resources/FoundationSeries.txt"));
             long finish = System.currentTimeMillis();
             long timeElapsed = finish - start;
-            sum += timeElapsed;
-        }
-
-        System.out.println("average was: " + sum/100);
-
-
 
     }
 
